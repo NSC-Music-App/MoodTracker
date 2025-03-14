@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0 
+    container_name: moodtracker
+    environment:
+      MYSQL_DATABASE: MoodTrackerDB 
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: moodtrackerdbpassword
+      MYSQL_ROOT_PASSWORD: moodtrackerdbpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:

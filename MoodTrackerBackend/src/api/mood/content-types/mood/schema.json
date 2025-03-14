@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "moods",
+  "info": {
+    "singularName": "mood",
+    "pluralName": "moods",
+    "displayName": "Mood",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "moods"
+    },
+    "emoji": {
+      "type": "enumeration",
+      "enum": [
+        "Happy",
+        "Relaxed",
+        "Neutral",
+        "Sad",
+        "Angry",
+        "Stressed",
+        "Mind-blown",
+        "Sleepy"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "playlist": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::playlist.playlist",
+      "inversedBy": "moods"
+    },
+    "ai_response": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ai-response.ai-response",
+      "mappedBy": "mood"
+    }
+  }
+}

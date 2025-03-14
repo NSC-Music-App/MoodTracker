@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "playlists",
+  "info": {
+    "singularName": "playlist",
+    "pluralName": "playlists",
+    "displayName": "playlist"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "moods": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::mood.mood",
+      "mappedBy": "playlist"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "playlist"
+    }
+  }
+}
