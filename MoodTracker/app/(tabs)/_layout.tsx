@@ -20,8 +20,18 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
+            bottom: 30,
+            marginLeft: 20, 
+            marginRight: 20, 
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            height: 70,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
+            borderBottomLeftRadius: 25,
+            borderBottomRightRadius: 25,
+            overflow: 'hidden',
+            zIndex: 1,
           },
           default: {},
         }),
@@ -29,15 +39,36 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: '',
+          tabBarIcon: ({ color }) => <IconSymbol size={32} name="house.fill" color={color} style={{ marginTop: 25 }}/>,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="report"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: '',
+          tabBarIcon: ({ color }) => <IconSymbol size={32} name="chart.bar.fill" color={color} style={{ marginTop: 25 }}/>,
+        }}
+      />
+      <Tabs.Screen
+        name="mood"
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <IconSymbol size={60} name="plus.circle.fill" color={'#20A4F3'} style={{ marginTop: 25,shadowColor:'#20A4F3', shadowRadius:10}}/>,
+        }}
+      />
+      <Tabs.Screen
+        name="favorite"
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <IconSymbol size={32} name="star.fill" color={color} style={{ marginTop: 25 }}/>,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => <IconSymbol size={32} name="person.fill" color={color} style={{ marginTop: 25 }}/>,
         }}
       />
     </Tabs>
