@@ -1,74 +1,224 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import {StyleSheet,View, FlatList} from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import MoodBar from '@/components/MoodBar';
+interface CalendarItem {
+  day: string;
+  date: number;
+  mood: string | null;
+  isToday?: boolean;
+}
+
+interface MoodChartItem {
+  time: string;
+  mood: string;
+  height: number;
+}
 
 export default function HomeScreen() {
+// Mock Data
+  const calendarData: CalendarItem[] = [
+    { day: 'Thu', date: 1, mood: '😊' },
+    { day: 'Fri', date: 2, mood: '😊' },
+    { day: 'Sat', date: 3, mood: '😊' },
+    { day: 'Sun', date: 4, mood: '😊', isToday: true },
+    { day: 'Mon', date: 5, mood: null },
+    { day: 'Tue', date: 6, mood: null },
+    { day: 'Wed', date: 7, mood: null },
+  ];
+
+  const moodChartData: MoodChartItem[] = [
+    { time: '10:08', mood: '😊', height: 60 },
+    { time: '12:10', mood: '😐', height: 40 },
+    { time: '14:40', mood: '😢', height: 20 },
+    { time: '18:30', mood: '😊', height: 60 },
+    { time: '20:10', mood: '😢', height: 20 },
+  ];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={styles.container}>
+      {/* ส่วนทักทาย */}
+      <ThemedView style={styles.headerContainer}>
+        <ThemedText style={styles.greetingText}>
+          Hey, User! 👋
+        </ThemedText>
+          <ThemedText style={styles.dateText}>Sun, 4 Jun 📅</ThemedText>
+          <ThemedView style={styles.streakBadge}>
+            <ThemedText style={styles.streakText}>🔥 5</ThemedText>
+          </ThemedView>
+        </ThemedView>
+
+      {/* ปฏิทิน */}
+        <FlatList
+          data={calendarData}
+          style={styles.card}
+          horizontal
+          keyExtractor={(item) => item.date.toString()}
+          renderItem={({ item }) => (
+            <ThemedView
+              style={[
+                styles.calendarItem,
+                item.isToday && styles.todayItem,
+              ]}
+            >
+              <ThemedText style={styles.dayText}>{item.day}</ThemedText>
+              <ThemedText style={styles.dateTextCalendar}>{item.date}</ThemedText>
+              {item.mood && (
+                <ThemedText style={styles.moodEmoji}>{item.mood}</ThemedText>
+              )}
+            </ThemedView>
+          )}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
+
+      {/* Today's Check-in */}
+      <ThemedView style={styles.checkin}>
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          Today's Check-in
         </ThemedText>
+        {moodChartData? <ThemedText style={styles.placeholderText}>
+          {moodChartData.length}
+        </ThemedText> : <ThemedText style={styles.placeholderText}>
+          Tap to select your mood today!
+        </ThemedText>}
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
+
+      {/* Mood Chart */}
+      <ThemedView style={styles.card}>
+        <ThemedText type="subtitle" style={styles.sectionTitle}>
+          Mood Chart
         </ThemedText>
+        <FlatList
+          data={moodChartData}
+          horizontal
+          keyExtractor={(item) => item.time}
+          renderItem={({ item }) => (
+            <ThemedView style={styles.moodBarContainer}>
+              <ThemedText style={styles.moodEmoji}>{item.mood}</ThemedText>
+              <MoodBar height={item.height} mood={item.mood} />
+              <ThemedText style={styles.timeText}>{item.time}</ThemedText>
+            </ThemedView>
+          )}
+        />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <ThemedText>
+      </ThemedText>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container:{
+    padding: 4
+  },
+  headerContainer: {
     alignItems: 'center',
-    gap: 8,
+    padding: 20,
+    flexDirection: 'row',
+    borderRadius: 15,
+    marginHorizontal: 16,
+    justifyContent:'space-between',
+    marginVertical: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  greetingText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  dateText: {
+    fontSize: 16,
+    color: '#444',
   },
+  streakBadge: {
+    backgroundColor: '#FFEBEE',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  streakText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FF4500',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 16,
+    gap: 4,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  calendarItem: {
+    alignItems: 'center',
+    padding: 10,
+    marginRight: 10,
+    borderRadius: 40,
+    backgroundColor: '#F5F5F5',
+    width: 60,
+  },
+  todayItem: {
+    backgroundColor: '#87CEEB',
+    borderWidth: 2,
+    borderColor: '#20A4F3',
+  },
+  dayText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#444',
+  },
+  dateTextCalendar: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  moodEmoji: {
+    fontSize: 20,
+  },
+  placeholderText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    borderRadius: 16,
+    padding: 10 ,
+    backgroundColor: '#####',
+//คิดdesign ยังไม่ออก
+  },
+  moodBarContainer: {
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  timeText: {
+    fontSize: 12,
+    color: '#666',
+  },
+  checkin:{
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 15,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  }
+
 });
