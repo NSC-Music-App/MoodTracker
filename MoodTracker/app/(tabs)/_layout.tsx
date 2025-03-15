@@ -33,6 +33,16 @@ export default function TabLayout() {
             overflow: 'hidden',
             zIndex: 1,
           },
+          android: {
+            position: 'absolute',
+            bottom: 20,
+            left: 20,
+            right: 20,
+            backgroundColor: 'rgba(255, 255, 255, 1)',
+            height: 70,
+            borderRadius: 25,
+            elevation: 5, 
+          },
           default: {},
         }),
       }}>
