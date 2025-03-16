@@ -1,4 +1,4 @@
-import { StyleSheet, Image, Platform, View, TextInput } from "react-native";
+import { StyleSheet, Image, Platform, View, TextInput,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard } from "react-native";
 import React from 'react';
 import { Collapsible } from "@/components/Collapsible";
 import { ExternalLink } from "@/components/ExternalLink";
@@ -37,9 +37,10 @@ export default function MoodScreen() {
         style={{
           flexDirection: "row", // ให้เรียงแนวนอน
           flexWrap: "wrap", // เมื่อเต็มแถวจะไปแถวใหม่
-          justifyContent: "center", // จัดให้อยู่ตรงกลาง
+          justifyContent: "space-between", // จัดให้มีระยะห่างระหว่างไอเทม
           alignItems: "center",
           gap: 15, // ระยะห่างระหว่างปุ่ม
+          width: '100%',
         }}
       >
         <Pressable
