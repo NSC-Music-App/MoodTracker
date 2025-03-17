@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
 
+//อารมณ์ที่จะให้เลือก
 type MoodType = 'happy' | 'sleepy' | 'sad' | 'angry' | 'mind-blowing'
+
+//โครงสร้างสำหรับจัดเก็บรายการบันทึกอารมณ์ตามวันที่
 type MoodEntries = Record<string, {mood: MoodType; color:string }>;
 
 const MOOD_COLORS: Record<MoodType, string> = {
@@ -13,15 +16,20 @@ const MOOD_COLORS: Record<MoodType, string> = {
     'mind-blowing': '#32CD32',
 };
 
+// Constants for view calculations
+const DAYS_IN_WEEK = 7;
+const SCREEN_PADDING = 32;
+
 const CalendarScreen  = () => {
     const [currentDate, setCurrentDate] = useState(new Date('2025-03-01'));
-    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [moods, setMoods] = useState<MoodEntries>({});
 
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
     const daysInMonth = eachDayOfInterval({ start:monthStart, end:monthEnd })
-
+    const today = new Date();
+    
     const handleMonthChange = (direction: 'next' | 'prev') => {
         setCurrentDate(prev => direction === 'next' ? addMonths(prev, 1) : subMonths(prev, 1))
     };
@@ -31,6 +39,7 @@ const CalendarScreen  = () => {
         setSelectedDate(dateString)
     }
 
+    // เปลี่ยนเดือน
     const renderHeader = () => (
         <View style={styles.header}>
           <TouchableOpacity onPress={() => handleMonthChange('prev')}>
@@ -43,6 +52,7 @@ const CalendarScreen  = () => {
         </View>
       );
 
+    // ชื่อวันในสัปดาห์
     const renderDayNames = () => (
         <View style={styles.dayNames}>
           {['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'].map(day => (
@@ -50,24 +60,35 @@ const CalendarScreen  = () => {
           ))}
         </View>
       );
-
+    
+    // render วันที่ของเดือนนั้น ๆ
     const renderDays = () => {
         const screenWidth = Dimensions.get('window').width
-        const daySize = (screenWidth - 32) /7;
+        const daySize = (screenWidth - SCREEN_PADDING) / DAYS_IN_WEEK;
 
         return(
             <View style={styles.daysContainer}>
                 {daysInMonth.map((date, index) => {
                     const dateString  = format(date, 'yyyy-MM-dd')
                     const isCurrentMonth = isSameMonth(date, currentDate)
-                    const mood = moods[dateString]?.color
+                    const isToday = isSameDay(date, today)
+                    const isSelected = dateString === selectedDate
+                    const moodColor = moods[dateString]?.color
                     
                     return (
-                        <TouchableOpacity key={index} style={[styles.day, {width: daySize,
-                            height: daySize,
-                            backgroundColor: isSameDay(date, new Date()) ? '#f0f0f0' : 'white',},]} onPress={() => handleDatePress(date)}>
+                        <TouchableOpacity 
+            key={dateString} 
+            style={[
+              styles.day, 
+              { width: daySize, height: daySize },
+              isToday && styles.todayBackground,
+              isSelected && styles.selectedDay
+            ]} 
+            onPress={() => handleDatePress(date)}
+            accessibilityLabel={`Select ${format(date, 'MMMM do, yyyy')}`}
+          >
                                  <Text style={[styles.dayText, !isCurrentMonth && styles.nonMonthDay]}>{format(date, 'd')}</Text>
-                                {mood && <View style={[styles.moodDot, { backgroundColor: mood }]} />}                                    
+                                {moodColor && <View style={[styles.moodDot, { backgroundColor: moodColor }]} />}                                    
                         </TouchableOpacity>
                     ) 
                 })}
@@ -87,7 +108,7 @@ const CalendarScreen  = () => {
     const styles = StyleSheet.create({
         container: {
           flex: 1,
-          padding: 16,
+          padding: SCREEN_PADDING / 2,
         },
         header: {
           flexDirection: 'row',
@@ -127,6 +148,13 @@ const CalendarScreen  = () => {
         },
         nonMonthDay: {
           color: '#c0c0c0',
+        },
+        todayBackground: {
+          backgroundColor: '#f0f0f0',
+        },
+        selectedDay: {
+          borderColor: '#007AFF',
+          borderWidth: 2,
         },
         moodDot: {
           position: 'absolute',
