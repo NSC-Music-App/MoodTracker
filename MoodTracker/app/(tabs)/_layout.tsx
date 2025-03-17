@@ -73,14 +73,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="report"
+        name="calendar"
         options={{
           title: "",
           tabBarIcon: ({ color }) => (
             <ThemedView style={{justifyContent: 'center', alignItems: 'center',backgroundColor: 'transparent',height:'100',paddingTop:'100%'}}>
               <FontAwesome6
                 size={32}
-                name="chart-simple"
+                name="calendar"
                 color={color}
               />
             </ThemedView>
