@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-nati
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, addMonths, subMonths } from 'date-fns';
 
 //อารมณ์ที่จะให้เลือก
-type MoodType = 'happy' | 'sleepy' | 'sad' | 'angry' | 'mind-blowing'
+export type MoodType = 'happy' | 'sleepy' | 'sad' | 'angry' | 'mind-blowing'
 
 //โครงสร้างสำหรับจัดเก็บรายการบันทึกอารมณ์ตามวันที่
 type MoodEntries = Record<string, {mood: MoodType; color:string }>;
 
-const MOOD_COLORS: Record<MoodType, string> = {
+export const MOOD_COLORS: Record<MoodType, string> = {
     happy: '#FFD700',
     sleepy: '#A9A9A9',
     sad: '#1E90FF',
@@ -24,18 +24,27 @@ const CalendarScreen  = () => {
     const [currentDate, setCurrentDate] = useState(new Date('2025-03-01'));
     const [selectedDate, setSelectedDate] = useState<string | null>(null);
     const [moods, setMoods] = useState<MoodEntries>({});
+    const [showMoodPicker, setShowMoodPicker] = useState(false);
 
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
     const daysInMonth = eachDayOfInterval({ start:monthStart, end:monthEnd })
     const today = new Date();
     
+    const handleMoodPicker  = (mood: MoodType) => {
+      setMoods(prev => ({
+        ...prev, [selectedDate!]: { mood, color: MOOD_COLORS[mood] }
+      }))
+      setShowMoodPicker
+    }
+
+    
     const handleMonthChange = (direction: 'next' | 'prev') => {
         setCurrentDate(prev => direction === 'next' ? addMonths(prev, 1) : subMonths(prev, 1))
     };
 
     const handleDatePress = (date: Date) => {
-        const dateString = format(date, 'yyyy-MM-DD')
+        const dateString = format(date, 'yyyy-MM-dd')
         setSelectedDate(dateString)
     }
 
