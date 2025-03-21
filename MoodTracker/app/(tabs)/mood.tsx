@@ -55,7 +55,7 @@ export default function MoodScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/emoji/1.png")}
+            source={require("@/assets/images/emoji/happy.png")}
             style={{
               width: 60,
               height: 60,
@@ -121,7 +121,7 @@ export default function MoodScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/emoji/4.png")}
+            source={require("@/assets/images/emoji/sad.png")}
             style={{
               width: 60,
               height: 60,
@@ -143,7 +143,7 @@ export default function MoodScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/emoji/5.png")}
+            source={require("@/assets/images/emoji/angry.png")}
             style={{
               width: 60,
               height: 60,
@@ -189,7 +189,7 @@ export default function MoodScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/emoji/7.png")}
+            source={require("@/assets/images/emoji/mind-blowing.png")}
             style={{
               width: 60,
               height: 60,
@@ -212,7 +212,7 @@ export default function MoodScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/emoji/8.png")}
+            source={require("@/assets/images/emoji/sleepy.png")}
             style={{
               width: 60,
               height: 60,
