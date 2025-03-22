@@ -43,7 +43,7 @@ const RegisterScreen = () => {
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.back()}>
-      <Text style={styles.switchText}>Already have an account? <Text style={{ fontWeight: 'bold', color: '#20A4F3' }}>Login</Text></Text>
+      <Text style={styles.switchText}>Already have an account? <Text style={{ fontWeight: 'bold', color: '#20A4F3' }}>Sign In</Text></Text>
       </TouchableOpacity>
     </View>
   );
