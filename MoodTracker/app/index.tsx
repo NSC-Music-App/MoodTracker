@@ -48,6 +48,10 @@ const LoginScreen = () => {
       <Text style={styles.switchText}>Don't have an account? <Text style={{ fontWeight: 'bold', color: '#20A4F3' }}>Sign Up</Text></Text>
       </TouchableOpacity>
 
+      <TouchableOpacity style={styles.button}  onPress={() => router.push("./(tabs)")}>
+      <Text style={styles.buttonText}>For Develop</Text>  
+      </TouchableOpacity>
+
       {/* Dialog Alert */}
       <Portal>  
         <Dialog visible={visible} onDismiss={hideDialog}>
